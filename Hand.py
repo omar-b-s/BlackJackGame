@@ -1,23 +1,54 @@
-class hand_module:
-    def __init__(self):
-        self.cards = []
-        self.total = 0
-        self.aces = 0
+import java.util.ArrayList;
+import java.util.List;
 
-    def add_card(self, card):
-        self.cards.append(card)
-        if card.rank == "Ace":
-            self.aces += 1
-        self.calculate_total()
+class Hand {
+    private List<Card> cards;
+    private int total;
+    private int aces;
 
-    def calculate_total(self):
-        self.total = sum(card.value for card in self.cards)
-        while self.total > 21 and self.aces > 0:
-            self.total -= 10  # Convert one Ace from 11 to 1
-            self.aces -= 1
+    public Hand() {
+        cards = new ArrayList<>();
+        total = 0;
+        aces = 0;
+    }
 
-    def is_bust(self):
-        return self.total > 21
+    public void addCard(Card card) {
+        cards.add(card);
+        if (card.getRank().equals("Ace")) {
+            aces++;
+        }
+        calculateTotal();
+    }
 
-    def __str__(self):
-        return ", ".join(str(card) for card in self.cards)
+    private void calculateTotal() {
+        total = 0;
+        for (Card card : cards) {
+            total += card.getValue();
+        }
+        while (total > 21 && aces > 0) {
+            total -= 10; // Convert one Ace from 11 to 1
+            aces--;
+        }
+    }
+
+    public boolean isBust() {
+        return total > 21;
+    }
+
+    public int getTotal() {
+        return total;
+    }
+
+    public List<Card> getCards() {
+        return cards;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder handString = new StringBuilder();
+        for (Card card : cards) {
+            handString.append(card).append(", ");
+        }
+        return handString.substring(0, handString.length() - 2); // Remove trailing comma and space
+    }
+}
